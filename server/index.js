@@ -1,7 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose'); // import file and we are using mongoose to connect it with our data base
 
-const db = "mongodb+srv://lunagok:kalpesh@cluster0.909if4q.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+
+const cors = require('cors');
+
+const dbApi = require('./impFile');
+const authRouter = require('./routes/auth');
+
+const db = dbApi;
 
 const PORT = process.env.PORT | 3001; //-- why 3000 because our web is already running on port 3000 so we can any port other than 3000
 //-- here process.env.port is for available port online and is in local development process we use 3001
@@ -12,6 +18,14 @@ const app = express(); // initialise the express and store it in variable app
 // this working is to establish promise between code and data base
 // in dart we have async then await 
 // in js we have .then((data) => {print(data)})
+
+
+// here we manipulate the data 
+// its is the last step when sending the data
+app.use(cors())
+app.use(express.json());
+app.use(authRouter);
+
 
 // -- we have to create new file for all user releate route
 app.post('/api/signup', (req, res) => { // (res, req) mean response and request this our the variable we can name then any thing
